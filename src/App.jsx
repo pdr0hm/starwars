@@ -5,18 +5,21 @@ import logo from "./assets/logo.png";
 import { Character } from "./components/Character";
 import { Searchbar } from "./components/Searchbar";
 import { Modal } from "./components/Modal";
+import { Loading } from "./components/Loading";
 
 function App() {
   const [characters, setCharacters] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchCharacters();
   }, []);
 
   async function fetchCharacters() {
+    setIsLoading(true);
     let nextPage = "https://swapi.dev/api/people/";
 
     let characters = [];
@@ -32,6 +35,7 @@ function App() {
     }
 
     setCharacters(characters);
+    setIsLoading(false);
   }
 
   const handleSelectedCharacter = (character) => {
@@ -54,8 +58,8 @@ function App() {
       <Searchbar setSearch={setSearch} value={search} />
 
       <div className=" md:max-w-screen-lg md:h-[660px] mx-auto mt-5  bg-zinc-900 rounded-md flex flex-wrap gap-x-20 gap-y-10 justify-center p-4 overflow-y-scroll  scrollbar-thumb-zinc-600 scrollbar-track-transparent scrollbar-thin scrollbar-thumb-rounded-full ">
-        {characters &&
-          (!isModalOpen ? (
+        {!isLoading ? (
+          !isModalOpen ? (
             characters.map((character) => {
               return (
                 character.name.toLowerCase().match(search.toLowerCase()) && (
@@ -73,7 +77,10 @@ function App() {
               character={selectedCharacter}
               setIsModalOpen={handleCloseModal}
             />
-          ))}
+          )
+        ) : (
+          <Loading />
+        )}
       </div>
     </>
   );
