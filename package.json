@@ -2,6 +2,7 @@
   "name": "starwars-char",
   "version": "0.1.0",
   "homebase":"https://pdr0hm.github.io/starwars/",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
